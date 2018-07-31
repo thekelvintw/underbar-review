@@ -78,16 +78,46 @@
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    var output = [];
+    _.each(collection, function(item){
+      if (test(item)) {
+        output.push(item);
+      }
+    });
+    return output;
   };
 
   // Return all elements of an array that don't pass a truth test.
   _.reject = function(collection, test) {
-    // TIP: see if you can re-use _.filter() here, without simply
-    // copying code in and modifying it
+    var output = [];
+    _.filter(collection, function(item){
+      if(!test(item)) {
+        output.push(item);
+      }
+    })    
+    return output;
   };
-
+  
+  //Go back to it later
   // Produce a duplicate-free version of the array.
   _.uniq = function(array, isSorted, iterator) {
+    var isSorted = isSorted || false;
+    var iterator = iterator || _.identity;
+    console.log(typeof iterator);
+    var obj = {};
+    var output = [];
+    _.each(array, function(item){
+      var transformed = iterator(item);
+      obj[transformed] === undefined ? obj[transformed] = 1 : obj[transformed]++;
+    });
+    for(var key in obj){
+      if(typeof key !== 'number'){
+        output.push(Number(key));
+      }else {
+        output.push(key);
+      }
+    }
+    return output;
   };
 
 
