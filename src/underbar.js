@@ -110,15 +110,11 @@
       // if (iterator(item) === true){
       //   obj[item] === undefined? obj[item] = 1 : obj[item]++;
       // } 
-      var transformed = iterator(item);
-      obj[transformed] === undefined ? obj[transformed] = 1 : obj[transformed]++;
+       var transformed = iterator(item); /*obj = {true : 1, false : 2}*/
+      obj[transformed] === undefined ? obj[transformed] = item : obj[transformed] = obj[transformed];
     });
     for(var key in obj){
-      if(typeof key !== 'number'){
-        output.push(Number(key));
-      } else {
-        output.push(key);
-      }
+      output.push(obj[key]);
     }
     return output;
   };
@@ -215,6 +211,7 @@
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) { 
+    iterator = iterator || _.identity
     //strategy 
     // check if every item is false = return false
     // else return true;
@@ -250,11 +247,27 @@
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var output = obj;
+    for(var i = 1; i < arguments.length; i++){
+      for(var key in arguments[i]){
+        output[key] = arguments[i][key];
+      }
+    }
+    return output;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    var output = obj;
+    for(var i = 1; i < arguments.length; i++){
+      for(var key in arguments[i]){
+        if(!output.hasOwnProperty(key)){
+          output[key] = arguments[i][key];
+        }
+      }
+    }
+    return output;
   };
 
 
